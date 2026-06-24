@@ -1,0 +1,35 @@
+services:
+  # Layer 1: The Jenkins Controller (Web UI Only)
+  jenkins-controller:
+    image: jenkins/jenkins:lts-jdk21
+    container_name: jenkins-web-ui
+    restart: always
+    ports:
+      - "8090:8080"
+      - "50009:50009"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
+  # Layer 2: The Isolated Worker Node (Where your Maven builds will actually run)
+  jenkins-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile_agent
+    container_name: jenkins-isolated-agent
+    restart: always
+    user: root # Gives the agent permission to run tools inside its container
+    depends_on:
+      - jenkins-controller
+    volumes:
+      - C:\jenkins_workspace:/jenkins_agent
+# <-- THE CRUCIAL LINE FOR WINDOWS DOCKER DESKTOP:
+      # This exposes the Windows host Docker daemon directly to the Linux container
+      - //var/run/docker.sock:/var/run/docker.sock      
+    environment:
+      TZ: Europe/Budapest
+      JENKINS_URL: http://jenkins-controller:8080/
+      JENKINS_SECRET: "b4f2639eebd792643d2745077407f59da1e2e2078579857b7b08cc560ffbc7b3"
+      JENKINS_AGENT_NAME: "Windows-Docker-Worker"
+
+volumes:
+  jenkins_home:
