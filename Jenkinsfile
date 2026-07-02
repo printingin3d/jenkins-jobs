@@ -5,7 +5,7 @@ pipeline{
         timeout(time: 2, unit: 'HOURS')   // timeout on whole pipeline job
     }
     stages {
-        stage("tar + Gzip /etc"){
+        stage("backup"){
             steps{
                 sh '''
                 DOM=$(date +%d)   # Day of the month (01-31)
@@ -32,7 +32,7 @@ pipeline{
                 gzip --best ${FILENAME}.sql
                 echo "put ${FILENAME}.sql.gz /public/backup/houseelf_backup/" | sftp -P 9333 -o StrictHostKeyChecking=no -i /home/jenkins/.ssh/jenkins_agent_key server@192.168.0.165
                 
-                ssh -P 9222 -o StrictHostKeyChecking=no -i /home/jenkins/.ssh/jenkins_agent_key server@192.168.0.165
+                ssh -P 9222 -o StrictHostKeyChecking=no -i /home/jenkins/.ssh/pruning_key server@192.168.0.165
                 '''
 
                 cleanWs()
