@@ -24,7 +24,7 @@ pipeline{
                     FILENAME="documents_daily_$(date +%Y%m%d)"
                 fi
                 
-                7z a -tzip -p"23Mirci_Hogolyo_Cirmi1" -mem=AES256 /data/backup/documents_backup/documents_$(date +%Y%m%d).zip /data/documents/
+                7z a -tzip -p"23Mirci_Hogolyo_Cirmi1" -mem=AES256 /data/backup/documents_backup/${FILENAME}.zip /data/documents/
                 '''
 
                 cleanWs()
