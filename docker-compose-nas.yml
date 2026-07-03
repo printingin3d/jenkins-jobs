@@ -1,0 +1,19 @@
+services:
+  jenkins-agent:
+    image: custom-jenkins-agent:jdk21
+    container_name: nas_jenkins_agent
+    restart: unless-stopped
+    # Forces container to drop its internal 'jenkins' identity 
+    # and inherit your exact NAS User ID and Group ID at the OS level.
+    # Replace 501:1000 with your actual NAS user/group IDs.
+    user: "0:0"
+    network_mode: "host"
+    environment:
+      - JENKINS_URL=https://jenkins.server
+      - JENKINS_SECRET=5725f40724095c0f294e09ef32cc66a005562a397c4b833b97d9f5bcb37d7091
+      - JENKINS_AGENT_NAME=nas_jenkins_agent
+    volumes:
+      # Mount Volume1
+      - /Volume1/public/:/data/:rw
+      # Workspace directory on the NAS for the agent
+      - /Volume1/public/jenkins_workspace:/home/jenkins/agent:rw

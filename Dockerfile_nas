@@ -1,0 +1,15 @@
+FROM jenkins/inbound-agent:latest-jdk21
+
+# Temporarily switch to root to install native packages
+USER root
+
+# Install 7-Zip (p7zip-full handles high-grade AES-256 zipping)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    p7zip-full \
+    && rm -rf /var/lib/apt/lists/*
+    
+COPY rootCA.pem /usr/local/share/ca-certificates/my_local_ca.crt
+RUN keytool -importcert -noprompt -alias local-pc-ca -cacerts -file /usr/local/share/ca-certificates/my_local_ca.crt
+    
+# Switch back to the standard unprivileged jenkins user context
+USER jenkins
