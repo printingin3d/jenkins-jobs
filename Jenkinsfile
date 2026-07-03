@@ -1,4 +1,5 @@
 pipeline{
+    agent { any }
     triggers{ cron('H 4 * * *') }
     options {
         timeout(time: 2, unit: 'HOURS')   // timeout on whole pipeline job
