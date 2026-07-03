@@ -12,4 +12,4 @@ find $BACKUP_DIR -name 'houseelf_weekly_*gz' -type f -mtime +28 -exec rm {} \;
 echo "deleting monthly backups"
 # (Optional) Keep monthlies for a year (365 days)
 # If you want to keep monthlies forever, just omit this line entirely
-find $BACKUP_DIR -name 'houseelf*gz' -type f -mtime +730 -exec rm {} \;
+find $BACKUP_DIR -name 'houseelf*gz' -type f -mtime +365 -exec rm {} \;
