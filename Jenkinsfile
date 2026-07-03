@@ -30,7 +30,6 @@ pipeline{
                 cleanWs()
             }
         }
-    /*
         stage("backup HouseElf"){
     
             agent { label 'houseelf' }
@@ -68,6 +67,5 @@ pipeline{
                 cleanWs()
             }
         }
-        */
     }
 }
