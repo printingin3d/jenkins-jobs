@@ -63,7 +63,7 @@ pipeline{
 
                 rm -f router*.tgz
                 ssh -i ~/.ssh/jenkins_agent_key admin@192.168.0.1 "/opt/vyatta/bin/vyatta-op-cmd-wrapper show configuration commands > /tmp/config-commands.txt"
-                ssh -i ~/.ssh/jenkins_agent_key admin@192.168.0.1 "tar -cfvz /tmp/router_${FILENAME}.tgz /config/config.boot /tmp/config-commands.txt /config/scripts/"
+                ssh -i ~/.ssh/jenkins_agent_key admin@192.168.0.1 "tar -cvzf /tmp/router_${FILENAME}.tgz /config/config.boot /tmp/config-commands.txt /config/scripts/"
                 scp -i ~/.ssh/jenkins_agent_key admin@192.168.0.1:/tmp/router_${FILENAME}.tgz .
                 echo "put router_${FILENAME}.tgz /public/backup/houseelf_backup/" | sftp -P 9333 -o StrictHostKeyChecking=no -i /home/jenkins/.ssh/jenkins_agent_key server@192.168.0.165
 
